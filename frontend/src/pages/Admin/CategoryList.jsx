@@ -53,14 +53,13 @@ const CategoryList = () => {
                 toast.error(res.error);
             }
             else {
+                toast.success(`Category ${res.name} updated successfully`);
                 setUpdateName("");
                 setModalVisible(false);
                 setSelectedCategory(null);
-                toast.success(`Category ${res.name} updated successfully`);
             }
         } catch (error) {
             console.error(error);
-            toast.error("Updating category failed");
         }
     }
 

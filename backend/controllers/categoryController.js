@@ -28,13 +28,16 @@ const updateCategory = asyncHandler(async(req, res) => {
         if(!name){
             return res.json({error: "Category name is required"});
         }
-        const category = await Category.findOne({_id: id});
-        if(!category){
+        const category = await Category.findOne({ _id: id });
+
+        if (!category) {
             return res.json({error: "Category not found"});
         }
+
         category.name = name;
-        await category.save();
-        return res.status(200).json(category);
+
+        const updatedCategory = await category.save();
+        res.json(updatedCategory);
             
     } catch (error) {
         console.log(error);  
@@ -45,11 +48,8 @@ const updateCategory = asyncHandler(async(req, res) => {
 const deleteCategory = asyncHandler(async(req, res) => {
     try {
         const {categoryId: id} = req.params;
-        const category = await Category.findOneAndDelete({_id: id});
-        if(!category){
-            return res.json({error: "Category not found"});
-        }
-        return res.status(200).json(category);
+        const removed = await Category.findByIdAndDelete(id);
+        res.json(removed);
             
     } catch (error) {
         console.log(error);
