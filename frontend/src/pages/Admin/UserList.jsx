@@ -4,6 +4,7 @@ import Loader from "../../components/Loader"
 import { toast } from "react-toastify"
 import { useGetUsersQuery, useDeleteUserMutation, useUpdateUserMutation} from "../../redux/api/usersApiSlice"
 import Message from "../../components/Message"
+import Admin from "./AdminMenu"
 
 const UserList = () => {
     const {data: users, refetch, isLoading, isError, error} = useGetUsersQuery();
@@ -56,7 +57,7 @@ const UserList = () => {
       {isLoading ? (<Loader />) : error ? (<Message variant='danger'>{error?.data?.message || error.message}</Message>)
       : (
           <div className="flex flex-col md:flex-row">
-            {/* Admin Menu */}
+             <Admin Menu />
             <table className="w-full md:w-4/5 mx-auto">
               <thead>
                 <tr>
