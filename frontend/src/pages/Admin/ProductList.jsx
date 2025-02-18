@@ -99,7 +99,7 @@ const ProductList = () => {
 
                 <div className="mb-3 ml-3 w-[66rem]">
                     <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
-                        {image ? image.name : 'Uplaod Image'}
+                        {image ? image.name : 'Upload Image'}
                         <input type="file" name='image' accept='image/*' onChange={uploadFileHandler} className={!image ? 'hidden' : 'text-white'}/>
                     </label>
                 </div>

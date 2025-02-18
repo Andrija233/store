@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { useAllProductsQuery } from "../../redux/api/productApiSlice";
 import AdminMenu from "./AdminMenu";
+import { useNavigate } from "react-router-dom";
 
 const AllProducts = () => {
     const { data: products, isLoading, isError } = useAllProductsQuery();
+    const navigate = useNavigate();
 
     if (isLoading) {
       return <div>Loading...</div>;
@@ -20,6 +22,12 @@ const AllProducts = () => {
         <div className="p-3">
           <div className="ml-[2rem] text-xl font-bold h-12">
             All Products ({products.length})
+            <button
+              className="bg-pink-500 text-white text-center pb-1 px-4 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 ml-4 cursor-pointer"
+              onClick={() => navigate("/admin/productlist")}
+            >
+              +
+            </button>
           </div>
           <div className="flex flex-wrap justify-around items-center">
             {products.map((product) => (

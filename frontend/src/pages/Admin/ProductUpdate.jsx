@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetProductByIdQuery, useUpdateProductMutation, useDeleteProductMutation, useUploadProductImageMutation } from "../../redux/api/productApiSlice"
 import { useGetAllCategoriesQuery } from "../../redux/api/categoryApiSlice"
 import { toast } from "react-toastify"
 import AdminMenu from "./AdminMenu"
+import Loader from "../../components/Loader"
 
 const ProductUpdate = () => {
     const params = useParams();
 
-    const {data: productData} = useGetProductByIdQuery(params._id);
+    const {data: productData, isLoading} = useGetProductByIdQuery(params._id);
     const [image,setImage] = useState(productData?.image || "");
     const [name,setName] = useState(productData?.name || "");
     const [description,setDescription] = useState(productData?.description || "");
@@ -26,19 +27,52 @@ const ProductUpdate = () => {
     const [updateProduct] = useUpdateProductMutation();
     const [deleteProduct] = useDeleteProductMutation();
 
-    useEffect(() => {
-        if(productData && productData._id){
-            setName(productData.name);
-            setDescription(productData.description);
-            setPrice(productData.price);
-            setCategory(productData.categories?._id);
-            setQuantity(productData.quantity);
-            setBrand(productData.brand);
-            setStock(productData.countInStock);
-            setImage(productData.image);
-        }
-    }, [productData]);
 
+    const processedData = useMemo(() => {
+      if (productData) { // Check if productData is available
+        return {
+          name: productData.name || '', // Default empty string if not available
+          description: productData.description || '',
+          price: productData.price || '',
+          category: productData.category?._id, // Default empty string if not available
+          quantity: productData.quantity || 0, // Default to 0
+          brand: productData.brand || '',
+          stock: productData.countInStock || 0, // Default to 0
+          image: productData.image || ''
+        };
+      }
+      return {}; // Return empty object if productData is not available
+    }, [productData]); // Re-run effect only if productData changes
+    
+    useEffect(() => {
+      if (processedData) {
+        setName(processedData.name);
+        setDescription(processedData.description);
+        setPrice(processedData.price);
+        setCategory(processedData.category);
+        setQuantity(processedData.quantity);
+        setBrand(processedData.brand);
+        setStock(processedData.stock);
+        setImage(processedData.image);
+      }
+    }, [processedData]);
+    
+
+    // useEffect(() => {
+    //     if(productData && productData._id && productData.category?._id && productData.image && productData.name && productData.description && productData.price && productData.quantity && productData.brand && productData.countInStock){
+    //       setName(productData.name);
+    //       setDescription(productData.description);
+    //       setPrice(productData.price);
+    //       setCategory(productData.category?._id);
+    //       setQuantity(productData.quantity);
+    //       setBrand(productData.brand);
+    //       setStock(productData.countInStock);
+    //       setImage(productData.image);
+    //     }
+    // }, [productData]);
+
+
+    
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
@@ -72,10 +106,6 @@ const ProductUpdate = () => {
             return;
           }
           formData.append("price", price);
-          if(!category){
-            toast.error("Category is required");
-            return;
-          }
           formData.append("category", category);
           if(!quantity){
             toast.error("Quantity is required");
@@ -130,7 +160,7 @@ const ProductUpdate = () => {
           <AdminMenu />
           <div className="md:w-3/4 p-3">
             <div className="h-12 font-semibold">Update / Delete Product</div>
-
+            {isLoading && <Loader />}
             {image && (
               <div className="text-center">
                 <img
@@ -228,9 +258,9 @@ const ProductUpdate = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     value={category}
                   >
-                    {categories?.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
+                    {categories?.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>

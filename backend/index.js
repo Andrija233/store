@@ -29,6 +29,6 @@ app.use('/api/products', productRoutes);
 app.use('/api/uploads', uploadRoutes);
 
 const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -30,10 +30,6 @@ const updateCategory = asyncHandler(async(req, res) => {
         }
         const category = await Category.findOne({ _id: id });
 
-        if (!category) {
-            return res.json({error: "Category not found"});
-        }
-
         category.name = name;
 
         const updatedCategory = await category.save();
