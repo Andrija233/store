@@ -13,7 +13,7 @@ router.route('/')
     .get(getProducts);
 
 router.route('/allproducts').get(getAllProducts);
-router.route('/:id/reviews').post(authenticate, admin, checkId, addProductReview)
+router.route('/:id/reviews').post(authenticate, checkId, addProductReview)
 
 
 router.get('/top', getTopProducts);
