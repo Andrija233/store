@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import { useGetProductDetailsQuery, useCreateReviewMutation } from "../../redux/api/productApiSlice";
 import { FaBox, FaClock, FaShoppingCart, FaStar, FaStore} from "react-icons/fa";
+import { addToCart } from "../../redux/features/cart/cartSlice";
 import moment from "moment";
 import HeartIcon from "./HeartIcon";
 import Ratings from "./Ratings";
@@ -36,6 +37,12 @@ const ProductDetails = () => {
     } catch (error) {
       toast.error(error?.data || error.message);
     }
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+    toast.success("Product added to cart");
+    navigate("/cart");
   };
 
   return (
@@ -127,7 +134,7 @@ const ProductDetails = () => {
 
                <div className="btn-container">
                 <button 
-                    //onClick={addToCartHandler} 
+                    onClick={addToCartHandler} 
                     disabled={product.countInStock === 0} 
                     className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0 cursor-pointer hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
                 >
