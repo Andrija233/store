@@ -4,7 +4,7 @@ import { authenticate, admin } from '../middlewares/authMiddleware.js';
 import checkId from '../middlewares/checkId.js';
 
 // controllers
-import { addProduct, updateProduct, deleteProduct, getProducts, getProductById, getAllProducts, addProductReview, getTopProducts, getNewProducts } from '../controllers/productController.js';
+import { addProduct, updateProduct, deleteProduct, getProducts, getProductById, getAllProducts, addProductReview, getTopProducts, getNewProducts, filterProducts } from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -23,5 +23,6 @@ router.route('/:id')
     .put(authenticate, admin, formidable(), updateProduct)
     .delete(authenticate, admin, deleteProduct);
 
+router.route('/filtered-products').post(filterProducts);
 
 export default router;

@@ -175,4 +175,25 @@ const getNewProducts = asyncHandler(async (req, res) => {
     }
 });
 
-export { addProduct, updateProduct, deleteProduct, getProducts, getProductById, getAllProducts, addProductReview, getTopProducts, getNewProducts };
+const filterProducts = asyncHandler(async (req, res) => {
+    try {
+        const {checked, radio} = req.body;
+        let filter = {};
+        if(checked.length > 0){
+            filter.category = checked;
+        }
+        if(radio.length){
+            filter.price = {
+                $gte: radio[0],
+                $lte: radio[1]
+            }
+        }
+        const products = await Product.find(filter);
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message);
+    }
+});
+
+export { addProduct, updateProduct, deleteProduct, getProducts, getProductById, getAllProducts, addProductReview, getTopProducts, getNewProducts, filterProducts };
