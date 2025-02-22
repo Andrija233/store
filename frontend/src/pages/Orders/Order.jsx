@@ -214,13 +214,15 @@ const Order = () => {
               </div>
             )}
             {order.isPaid  && (
-              <button
-              type="button"
-              className="bg-pink-500 text-white w-full py-2 cursor-pointer hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
-              onClick={() => navigate(-1)}
-            >
-              Go Back
-            </button>
+              <div className="mt-4">
+                <button
+                type="button"
+                className="bg-pink-500 text-white w-full py-2 cursor-pointer hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+                onClick={() => navigate(-1)}
+              >
+                Go Back
+              </button>
+            </div>
             )}
             
           </div>
