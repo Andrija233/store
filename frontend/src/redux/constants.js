@@ -9,3 +9,5 @@ export const UPLOAD_URL = '/api/uploads';
 
 export const ORDERS_URL = '/api/orders';
 export const PAYPAL_URL = '/api/config/paypal';
+
+export const CHATBOT_URL = '/api/chat'
